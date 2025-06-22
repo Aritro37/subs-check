@@ -3,6 +3,7 @@ package config
 import _ "embed"
 
 type Config struct {
+	DnsServer          string   `yaml:"dns-server"`
 	PrintProgress      bool     `yaml:"print-progress"`
 	Concurrent         int      `yaml:"concurrent"`
 	CheckInterval      int      `yaml:"check-interval"`
