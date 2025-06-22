@@ -9,6 +9,8 @@ import (
 	"runtime"
 	"runtime/debug"
 	"sync/atomic"
+	"context"
+	"net"
 	"time"
 
 	"github.com/beck-8/subs-check/app/monitor"
@@ -80,7 +82,19 @@ func (app *App) Initialize() error {
 		// 求等吗得，日志会按预期顺序输出
 		time.Sleep(500 * time.Millisecond)
 	}
-
+	if config.GlobalConfig.DnsServer != "" && IsIP(config.GlobalConfig.DnsServer） {
+		 customResolver := &net.Resolver{
+			 PreferGo: true,
+			 Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
+				 d := net.Dialer{
+					 Timeout: 5 * time.Second,
+				 }
+				 return d.DialContext(ctx, "udp", dnsServer)
+			 },
+		 }
+		// 替换全局默认 Resolver
+		net.DefaultResolver = customResolver
+	}
 	// 启动内存监控
 	monitor.StartMemoryMonitor()
 
@@ -246,4 +260,8 @@ func (app *App) checkProxies() error {
 
 func TempLog() string {
 	return filepath.Join(os.TempDir(), "subs-check.log")
+}
+
+func IsIP(str string) bool {
+	return net.ParseIP(str) != nil
 }
