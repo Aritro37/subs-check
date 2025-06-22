@@ -89,7 +89,7 @@ func (app *App) Initialize() error {
 				 d := net.Dialer{
 					 Timeout: 5 * time.Second,
 				 }
-				 return d.DialContext(ctx, "udp", config.GlobalConfig.DnsServer)
+				 return d.DialContext(ctx, "udp", config.GlobalConfig.DnsServer + ":53")
 			 },
 		 }
 		// 替换全局默认 Resolver
