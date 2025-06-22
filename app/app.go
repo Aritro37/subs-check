@@ -82,7 +82,7 @@ func (app *App) Initialize() error {
 		// 求等吗得，日志会按预期顺序输出
 		time.Sleep(500 * time.Millisecond)
 	}
-	if config.GlobalConfig.DnsServer != "" && IsIP(config.GlobalConfig.DnsServer） {
+	if config.GlobalConfig.DnsServer != "" && IsIP(config.GlobalConfig.DnsServer) {
 		 customResolver := &net.Resolver{
 			 PreferGo: true,
 			 Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
